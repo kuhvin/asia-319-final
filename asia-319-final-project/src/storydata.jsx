@@ -7,13 +7,13 @@ export const story = [
       type: "text",
       text: `EXT. MOUNTAIN PASS — LATE SUNSET
 
-  The pass narrows where stone has been worn smooth by weather and caravan wheels. Far below, terraces catch what remains of the light in long broken bands. From the valley rise the ordinary sounds of evening labor: harness bells, shutters, a dog, the far-off clatter of a cart striking loose boards.
+  The pass narrows where stone has been worn smooth by weather and caravan wheels. Far below, terraces catch what remains of the light in long broken bands. From the valley rise the ordinary sounds of evening labor.
 
   Two men have come here by different roads, though any eye trained in the same old discipline would know at once that they were shaped by one institution. Their bearing gives them away before their faces do.
 
   LIAN stands near the edge with his back turned.
 
-  His traveling robe is light enough to show the dust of the road and well-made enough to suggest he did not belong to roads for most of his life. The clasp at his shoulder bears no emblem, but the habit of wearing it is official. Even tired, he looks like a man who was taught to make composure visible.
+  His traveling robe is light enough to show the dust of the road and well-made enough to suggest he did not belong to roads for most of his life. The clasp at his shoulder bears no emblem, but the habit of wearing it is official. Even tired, he looks like a man who was taught to be composed.
 
   Footsteps approach.
 
@@ -65,7 +65,7 @@ export const story = [
     {
       type: "text",
       requiresTag: "kai_measured_start",
-      text: `In training, Kai had always been the one who concealed concern beneath precision. It is strange, after so much time, to find that the old disguise still exists and yet no longer fits him quite as closely.
+      text: `In training, Kai had always been the one who concealed his concern well. It is strange, after so much time, to find that the old disguise still exists and yet no longer fits him quite as closely.
 
   The change is small enough that an inattentive man would miss it, but Lian has never been inattentive where Kai is concerned.`
     },
@@ -214,7 +214,7 @@ export const story = [
           audience: 1,
           qtag: 0,
           risk: -1,
-          followUp: `Lian is silent`,
+          followUp: `Lian does not answer his question.`,
           setTag: "kai_asks_hierarchy"
         },
         {
@@ -225,7 +225,7 @@ export const story = [
           qtag: 0,
           risk: 0,
           followUp: `LIAN
-  You always did know when silence becomes a demand.`,
+  You always did know how to make silence into a question.`,
           setTag: "kai_uses_silence"
         }
       ]

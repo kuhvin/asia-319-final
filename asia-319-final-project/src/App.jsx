@@ -510,7 +510,7 @@ export default function App() {
               key={item.id}
               className={`script-block ${item.type === "choice" ? "choice-text" : ""}`}
             >
-              {isLast ? (
+              {isLast && isTyping ? (
                 <Typewriter
                   text={item.text}
                   speed={20}
