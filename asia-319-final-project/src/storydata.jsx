@@ -1411,6 +1411,7 @@ export const story = [
           text: `KAI
   We are on official business and have no interest in delaying the road further.`,
           audience: -1,
+          qtags: 0,
           risk: 2,
           followUp: `The guard blinks. And then repeats the same phrase again. Lian sighs and reaches for his seal. The guard examines it and then waves them through. Lian shakes his head.
           
@@ -1444,7 +1445,7 @@ export const story = [
           text: `KAI
   Yes. Because we were taught to believe inconvenience was beneath us. It is how we were raised.`,
           audience: 3,
-          qtag: 0,
+          qtag: 1,
           risk: 1,
           followUp: `LIAN
   And being raised inside a habit is not the same as choosing to keep it.`,
@@ -1521,7 +1522,7 @@ export const story = [
         {
           prompt: "Remain wary.",
           text: `The pair slowly move towards the caretaker, knowing a place can be peaceful and still dangerous to those who misunderstand it.`,
-          audience: 3,
+          audience: 1,
           qtag: 0,
           risk: 0,
           setTag: "kai_wary_at_shrine"

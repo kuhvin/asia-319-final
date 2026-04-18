@@ -207,9 +207,9 @@ export default function App() {
 
     let endingId = "ending_brother";
 
-    if (finalQscore >= 12 && queerCommitment) {
+    if (finalQscore >= 47 && queerCommitment) {
       endingId = "ending_queer";
-    } else if (finalQscore >= 4) {
+    } else if (finalQscore >= 26) {
       endingId = "ending_ambiguous";
     }
 
@@ -419,11 +419,11 @@ export default function App() {
       tags: [],
     },
     ambiguous: {
-      qscore: 6,
+      qscore: 0,
       tags: ["kai_shared_account"],
     },
     queer: {
-      qscore: 14,
+      qscore: 50,
       tags: ["kai_clearest_truth", "final_closeness"],
     },
   };
@@ -466,9 +466,9 @@ export default function App() {
               zIndex: 9999,
             }}
           >
-            <button onClick={() => adminJumpToEnding("brother")}>Test Brother</button>
+            {/* <button onClick={() => adminJumpToEnding("brother")}>Test Brother</button>
             <button onClick={() => adminJumpToEnding("ambiguous")}>Test Ambiguous</button>
-            <button onClick={() => adminJumpToEnding("queer")}>Test Queer</button>
+            <button onClick={() => adminJumpToEnding("queer")}>Test Queer</button> */}
           </div>
       <div className="page" ref={pageRef}>
         {history.map((item, i) => {
