@@ -251,9 +251,7 @@ export default function App() {
 
   const ensureTypingAudio = () => {
     if (!typingAudioRef.current) {
-      typingAudioRef.current = new Audio(
-        "https://kuhvin.github.io/asia-319-final/typing.mp3"
-      );
+      typingAudioRef.current = new Audio("/asia-319-final/typing.mp3")
       typingAudioRef.current.volume = 0.12;
       typingAudioRef.current.loop = true;
       typingAudioRef.current.preload = "auto";

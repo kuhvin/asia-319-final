@@ -1731,7 +1731,7 @@ export const story = [
     type: "choice",
     choices: [
       {
-        prompt: "Let him speak in the language of allegiance.",
+        prompt: "Let him speak in the language of brotherhood.",
         text: `LIAN (CONT'D)
   The less respectable reason is that I did not know whether you would still stand with me once I chose to leave the administration behind.`,
         audience: 3,
@@ -1749,7 +1749,7 @@ export const story = [
         setTag: "lian_names_disordered_language"
       },
       {
-        prompt: "Let him speak in the language of truth.",
+        prompt: "Let him speak in the language of passion.",
         text: `LIAN (CONT'D)
   The less respectable reason is that I no longer know how to speak of you as though duty, history, or loyalty were equal to the truth.`,
         audience: 5,
