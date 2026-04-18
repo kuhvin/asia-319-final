@@ -19,7 +19,7 @@ export default function Typewriter({
     setDone(false);
 
     if (!audioRef.current) {
-        audioRef.current = new Audio(`${import.meta.env.BASE_URL}typing.mp3`);
+        audioRef.current = new Audio("https://kuhvin.github.io/asia-319-final/typing.mp3");
         audioRef.current.volume = 0.12;
     }
 
