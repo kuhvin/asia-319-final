@@ -1,0 +1,211 @@
+body {
+  margin: 0;
+  font-family: "Courier New", monospace;
+  background-color: #05070d;
+}
+
+/* Layout */
+.app {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Page */
+.page {
+  width: 600px;
+  background: #f4f1e8;
+  overflow-y: auto;
+  padding: 40px;
+  box-sizing: border-box;
+
+  position: relative;
+
+  transform: translateY(100%);
+  animation: rise 0.6s ease forwards;
+
+  /* subtle depth */
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  padding-bottom: 45vh;
+}
+
+.page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.15),
+    transparent
+  );
+}
+
+/* .page::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.15),
+    transparent
+  );
+} */
+
+.page::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes rise {
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Text */
+.story-text {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* Choice box */
+.choice-box {
+  position: fixed;
+  bottom: 0;
+
+  width: 700px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  height: 35vh;
+
+  background: rgba(60, 60, 60, 0.5);
+  backdrop-filter: blur(6px);
+
+  padding: 20px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border: 4px solid black;
+  transition: transform 0.6s ease;
+}
+
+.choice-text {
+  color: #4a90e2;
+}
+
+.choice-box.hide {
+  transform: translate(-50%, 100%);
+}
+
+/* Buttons */
+.choice-button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+
+  background: #2e2e2e;
+  color: white;
+
+  border: 3px solid black;
+  font-family: "Courier New", monospace;
+
+  cursor: pointer;
+}
+
+.choice-button:hover {
+  background: #444;
+}
+
+/* Title */
+.title-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #05070d; /* ✅ match outer background */
+}
+
+/* Start button */
+.start-button {
+  padding: 16px 30px;
+  font-size: 18px;
+  border: 3px solid black;
+  background: white;
+  cursor: pointer;
+  transition: opacity 0.5s ease;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+/* Cursor */
+.cursor {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Score panel */
+.score-panel {
+  position: fixed;
+  right: 40px;
+  top: 40px;
+  width: 200px;
+  background: #f4f1e8;
+  border: 3px solid black;
+  padding: 20px;
+}
+
+.script-block div {
+  white-space: pre-wrap;
+}
+
+
+
+
+
+
+
+
+.script-block {
+  margin-bottom: 26px;
+  white-space: pre-line;
+  line-height: 1.8;
+}
+
+/* CHARACTER NAME */
+.script-block .speaker {
+  display: block;
+  text-align: center;
+  margin: 18px 0 6px 0;
+  letter-spacing: 2px;
+}
+
+/* DIALOGUE */
+.script-block .dialogue {
+  display: block;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+/* DESCRIPTION */
+.script-block .desc {
+  margin-bottom: 10px;
+}
