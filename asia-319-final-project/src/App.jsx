@@ -33,10 +33,9 @@ export default function App() {
   const [qscore, setQscore] = useState(0);
 
   const pageRef = useRef(null);
+  const typingAudioRef = useRef(null);
 
   const makeId = () => `${Date.now()}-${Math.random()}`;
-
-  const hasTag = (tag) => tags.includes(tag);
 
   const addTag = (tag) => {
     if (!tag) return;
@@ -62,11 +61,9 @@ export default function App() {
 
     const extractSpeakerBase = (line) => {
       const trimmed = line.trim();
-
       const match = trimmed.match(/^([A-Z]+)(?:\s*\(([^)]+)\))?$/);
       if (!match) return null;
-
-      return match[1]; // KAI, LIAN, etc.
+      return match[1];
     };
 
     return {
@@ -107,10 +104,8 @@ export default function App() {
 
         if (/^[A-Z]+(?:\s*\([A-Z\s.'-]+\))?$/.test(trimmed) && trimmed.length < 35) {
           const baseSpeaker = extractSpeakerBase(trimmed);
-
           let displaySpeaker = trimmed;
 
-          // If same speaker repeats across beats or within block, use CONT'D
           if (
             baseSpeaker &&
             currentSpeaker === baseSpeaker &&
@@ -154,7 +149,11 @@ export default function App() {
         lastWasSpeaker = false;
         currentSpeaker = null;
 
-        return <div key={idx} style={{ margin: "8px 0" }}>{trimmed}</div>;
+        return (
+          <div key={idx} style={{ margin: "8px 0" }}>
+            {trimmed}
+          </div>
+        );
       }),
       lastSpeaker: currentSpeaker,
     };
@@ -162,6 +161,26 @@ export default function App() {
 
   const appendHistory = (text, type = "story") => {
     setHistory((prev) => [...prev, { text, type, id: makeId() }]);
+  };
+
+  const getEndingText = (finalQscore, finalTags) => {
+    const hasTag = (tag) => finalTags.includes(tag);
+
+    const queerCommitment =
+      hasTag("kai_clearest_truth") ||
+      hasTag("final_closeness") ||
+      hasTag("kai_together_against_return");
+
+    let endingId = "ending_brother";
+
+    if (finalQscore >= 43 && queerCommitment) {
+      endingId = "ending_queer";
+    } else if (finalQscore >= 22) {
+      endingId = "ending_ambiguous";
+    }
+
+    const endingBeat = endings.find((e) => e.id === endingId);
+    return endingBeat?.text || "FADE OUT.";
   };
 
   const finishGame = (finalTags = tags, finalQscore = qscore) => {
@@ -183,7 +202,6 @@ export default function App() {
 
     while (idx < story.length) {
       const beat = story[idx];
-
       const blocked = beat.blocksTag && currentTags.includes(beat.blocksTag);
       const required = !beat.requiresTag || currentTags.includes(beat.requiresTag);
 
@@ -197,31 +215,11 @@ export default function App() {
     return idx;
   };
 
-  const getEndingText = (finalQscore, finalTags) => {
-  const hasTag = (tag) => finalTags.includes(tag);
-
-  const queerCommitment =
-      hasTag("kai_clearest_truth") ||
-      hasTag("final_closeness") ||
-      hasTag("kai_together_against_return");
-
-    let endingId = "ending_brother";
-
-    if (finalQscore >= 47 && queerCommitment) {
-      endingId = "ending_queer";
-    } else if (finalQscore >= 26) {
-      endingId = "ending_ambiguous";
-    }
-
-    const endingBeat = endings.find((e) => e.id === endingId);
-    return endingBeat?.text || "FADE OUT.";
-  };
-
   const advanceToStep = (requestedStep, tagSnapshot = tags) => {
     const nextStep = getNextVisibleStep(requestedStep, tagSnapshot);
 
     if (nextStep >= story.length) {
-      finishGame();
+      finishGame(tagSnapshot, qscore);
       return;
     }
 
@@ -251,11 +249,38 @@ export default function App() {
     }
   };
 
-  const startGame = () => {
-    setQscore(0);
-    const unlockAudio = new Audio(`${import.meta.env.BASE_URL}typing.mp3`);
-    unlockAudio.play().then(() => unlockAudio.pause()).catch(() => {});
+  const ensureTypingAudio = () => {
+    if (!typingAudioRef.current) {
+      typingAudioRef.current = new Audio(
+        "https://kuhvin.github.io/asia-319-final/typing.mp3"
+      );
+      typingAudioRef.current.volume = 0.12;
+      typingAudioRef.current.loop = true;
+      typingAudioRef.current.preload = "auto";
+    }
 
+    return typingAudioRef.current;
+  };
+
+  const unlockTypingAudio = async () => {
+    const audio = ensureTypingAudio();
+
+    try {
+      audio.muted = true;
+      audio.currentTime = 0;
+      await audio.play();
+      audio.pause();
+      audio.currentTime = 0;
+      audio.muted = false;
+    } catch (err) {
+      audio.muted = false;
+      console.error("Audio unlock failed:", err);
+    }
+  };
+
+  const startGame = async () => {
+    setQscore(0);
+    await unlockTypingAudio();
     setStarted(true);
 
     setTimeout(() => {
@@ -401,6 +426,7 @@ export default function App() {
       </div>
     );
   }
+
   const getPreviousSpeakerForIndex = (index) => {
     let previousSpeaker = null;
 
@@ -412,24 +438,26 @@ export default function App() {
     return previousSpeaker;
   };
 
-  const adminJumpToEnding = (target) => {
-  const presets = {
-    brother: {
-      qscore: 0,
-      tags: [],
-    },
-    ambiguous: {
-      qscore: 0,
-      tags: ["kai_shared_account"],
-    },
-    queer: {
-      qscore: 50,
-      tags: ["kai_clearest_truth", "final_closeness"],
-    },
-  };
+  const adminJumpToEnding = async (target) => {
+    const presets = {
+      brother: {
+        qscore: 0,
+        tags: [],
+      },
+      ambiguous: {
+        qscore: 0,
+        tags: ["kai_shared_account"],
+      },
+      queer: {
+        qscore: 50,
+        tags: ["kai_clearest_truth", "final_closeness"],
+      },
+    };
 
-  const preset = presets[target];
+    const preset = presets[target];
     if (!preset) return;
+
+    await unlockTypingAudio();
 
     setAudience(0);
     setRisk(0);
@@ -456,20 +484,21 @@ export default function App() {
 
   return (
     <div className="app">
-          <div
-            style={{
-              position: "fixed",
-              top: 10,
-              right: 10,
-              display: "flex",
-              gap: "8px",
-              zIndex: 9999,
-            }}
-          >
-            {/* <button onClick={() => adminJumpToEnding("brother")}>Test Brother</button>
-            <button onClick={() => adminJumpToEnding("ambiguous")}>Test Ambiguous</button>
-            <button onClick={() => adminJumpToEnding("queer")}>Test Queer</button> */}
-          </div>
+      <div
+        style={{
+          position: "fixed",
+          top: 10,
+          right: 10,
+          display: "flex",
+          gap: "8px",
+          zIndex: 9999,
+        }}
+      >
+        {/* <button onClick={() => adminJumpToEnding("brother")}>Test Brother</button>
+        <button onClick={() => adminJumpToEnding("ambiguous")}>Test Ambiguous</button>
+        <button onClick={() => adminJumpToEnding("queer")}>Test Queer</button> */}
+      </div>
+
       <div className="page" ref={pageRef}>
         {history.map((item, i) => {
           const isLast = i === history.length - 1;
@@ -488,6 +517,7 @@ export default function App() {
                   showCursor={showChoices}
                   onUpdate={handleTypingUpdate}
                   formatter={(displayed) => formatText(displayed, previousSpeaker).elements}
+                  audioRef={typingAudioRef}
                   onComplete={() => {
                     setIsTyping(false);
                     handleTypedBlockComplete();

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 export default function Typewriter({
   text,
@@ -6,58 +6,58 @@ export default function Typewriter({
   onComplete,
   onUpdate,
   showCursor,
-  formatter
+  formatter,
+  audioRef
 }) {
   const [displayed, setDisplayed] = useState("");
   const [done, setDone] = useState(false);
-  const audioRef = useRef(null);
 
-  // 🎬 Typing logic
   useEffect(() => {
     let i = 0;
     setDisplayed("");
     setDone(false);
 
-    if (!audioRef.current) {
-        audioRef.current = new Audio("https://kuhvin.github.io/asia-319-final/typing.mp3");
-        audioRef.current.volume = 0.12;
+    const audio = audioRef?.current;
+
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play().catch((err) => {
+        console.error("Typing audio failed:", err);
+      });
     }
 
-    // ▶️ start audio
-    audioRef.current.play().catch(() => {});
-
     const interval = setInterval(() => {
-        i++;
+      i++;
 
-        const newText = text.slice(0, i);
-        setDisplayed(newText);
+      const newText = text.slice(0, i);
+      setDisplayed(newText);
 
-        if (onUpdate) onUpdate();
+      if (onUpdate) onUpdate();
 
-        if (i >= text.length) {
+      if (i >= text.length) {
         clearInterval(interval);
         setDone(true);
 
-        // ⏸ stop audio
-        if (audioRef.current) {
-            audioRef.current.pause();
+        if (audio) {
+          audio.pause();
+          audio.currentTime = 0;
         }
 
         setTimeout(() => {
-            if (onComplete) onComplete();
+          if (onComplete) onComplete();
         }, 300);
-        }
+      }
     }, speed);
 
     return () => {
-        clearInterval(interval);
+      clearInterval(interval);
 
-        // 🔥 CRITICAL: ALWAYS stop audio on cleanup
-        if (audioRef.current) {
-        audioRef.current.pause();
-        }
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
     };
-    }, [text]);
+  }, [text, speed, onComplete, onUpdate, audioRef]);
 
   return (
     <div style={{ minHeight: "1em" }}>
