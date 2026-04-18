@@ -253,7 +253,7 @@ export default function App() {
 
   const startGame = () => {
     setQscore(0);
-    const unlockAudio = new Audio("/typing.mp3");
+    const unlockAudio = new Audio(`${import.meta.env.BASE_URL}typing.mp3`);
     unlockAudio.play().then(() => unlockAudio.pause()).catch(() => {});
 
     setStarted(true);

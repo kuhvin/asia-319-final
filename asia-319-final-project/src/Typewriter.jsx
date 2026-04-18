@@ -19,7 +19,7 @@ export default function Typewriter({
     setDone(false);
 
     if (!audioRef.current) {
-        audioRef.current = new Audio("/typing.mp3");
+        audioRef.current = new Audio(`${import.meta.env.BASE_URL}typing.mp3`);
         audioRef.current.volume = 0.12;
     }
 
